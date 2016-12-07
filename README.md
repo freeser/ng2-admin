@@ -44,11 +44,25 @@ export class App {
 }
 ```
 
->##### 3.  在node_modules/ng2-bootstarp/components/utils/components-helper.service里面
+>##### 3.  在app.components最后添加
 
->修改ComponentsHelper.prototype.getRootViewContainerRef里面的
 
 ```
-this.root = rootComponent._hostElement.vcRef为
-this.root = rootComponent._component.viewContainerRef || rootComponent._hostElement.vcRef
+ComponentsHelper.prototype.getRootViewContainerRef = function () {
+    if (this.root) {
+        return this.root;
+    }
+    let comps = this.applicationRef.components;
+    if (!comps.length) {
+        throw new Error(`ApplicationRef instance not found`);
+    }
+    try {
+        let rootComponent = this.applicationRef._rootComponents[0];
+        this.root = rootComponent._component.viewContainerRef || rootComponent._hostElement.vcRef;
+        return this.root;
+    }
+    catch (e) {
+        throw new Error(`ApplicationRef instance not found`);
+    }
+};
 ```

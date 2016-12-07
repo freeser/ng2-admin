@@ -4,6 +4,7 @@ angular2,ng2-bootstrap,ng2-smart-table
 在使用[ng2-admin](https://akveo.github.io/ng2-admin/articles/001-getting-started/)的时候遇到的问题
 
 ### 1.  ng2-bootstarp中的modal弹出出错
+
 ```
 error_handler.js:53 Error: ApplicationRef instance not found
     at ComponentsHelper.getRootViewContainerRef (components-helper.service.js:50)
@@ -17,8 +18,11 @@ error_handler.js:53 Error: ApplicationRef instance not found
     at ViewRef_.detectChanges (view_ref.js:130)
     at application_ref.js:437
 ```
+
 解决方法：
+
 >##### 1.  在app.module里面
+
 ```
 import { ComponentsHelper } from 'ng2-bootstrap';
 providers: [{
@@ -26,6 +30,7 @@ providers: [{
 }]
 ```
 >##### 2.  在app.components里面
+
 ```
 import { ViewContainerRef } from '@angular/core';
 import { ComponentsHelper } from 'ng2-bootstrap';
@@ -38,8 +43,11 @@ export class App {
     }
 }
 ```
+
 >##### 3.  在node_modules/ng2-bootstarp/components/utils/components-helper.service里面
-修改ComponentsHelper.prototype.getRootViewContainerRef里面的
+
+>修改ComponentsHelper.prototype.getRootViewContainerRef里面的
+
 ```
 this.root = rootComponent._hostElement.vcRef为
 this.root = rootComponent._component.viewContainerRef || rootComponent._hostElement.vcRef
